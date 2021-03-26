@@ -1,3 +1,4 @@
+// Copyright (c) 2020-2021 Wazniya
 // Copyright (c) 2014-2019, MyMonero.com
 //
 // All rights reserved.
@@ -25,52 +26,39 @@
 // INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
 // STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF
 // THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+// Original Author: Lucas Jones
+// Modified to remove jQuery dep and support modular inclusion of deps by Paul Shapiro (2016)
+// Modified to add RingCT support by luigi1111 (2017)
 //
-"use strict";
+// v--- These should maybe be injected into a context and supplied to currencyConfig for future platforms
+const WazniyaBridge_utils = require('./WazniyaBridge_utils')
 //
-function IsValidPaymentIDOrNoPaymentID(payment_id__orNil) {
-	if (
-		payment_id__orNil == null ||
-		payment_id__orNil == "" ||
-		typeof payment_id__orNil == "undefined"
-	) {
-		return true; // no pid
+class WazniyaBridgeClass_Base
+{
+	constructor(this_Module)
+	{
+		this.Module = this_Module;
 	}
-	let payment_id = payment_id__orNil;
-	if (IsValidShortPaymentID(payment_id)) {
-		return true;
+	//
+	//
+	__new_cb_args_with(task_id, err_msg, res)
+	{
+		const args = 
+		{
+			task_id: task_id
+		};
+		if (typeof err_msg !== 'undefined' && err_msg) {
+			args.err_msg = err_msg; // errors must be sent back so that C++ can free heap vals container
+		} else {
+			args.res = res;
+		}
+		return args;
 	}
-	if (IsValidLongPaymentID(payment_id)) {
-		return true;
+	__new_task_id()
+	{
+		return Math.random().toString(36).substr(2, 9); // doesn't have to be super random
 	}
-	return false;
 }
-exports.IsValidPaymentIDOrNoPaymentID = IsValidPaymentIDOrNoPaymentID;
 //
-function IsValidShortPaymentID(payment_id) {
-	return IsValidPaymentIDOfLength(payment_id, 16);
-}
-exports.IsValidShortPaymentID = IsValidShortPaymentID;
-//
-function IsValidLongPaymentID(payment_id) {
-	return IsValidPaymentIDOfLength(payment_id, 64);
-}
-exports.IsValidLongPaymentID = IsValidLongPaymentID;
-//
-function IsValidPaymentIDOfLength(payment_id, required_length) {
-	if (required_length != 16 && required_length != 64) {
-		throw "unexpected IsValidPaymentIDOfLength required_length";
-	}
-	let payment_id_length = payment_id.length;
-	if (payment_id_length !== required_length) {
-		// new encrypted short
-		return false; // invalid length
-	}
-	let pattern = RegExp("^[0-9a-fA-F]{" + required_length + "}$");
-	if (pattern.test(payment_id) != true) {
-		// not a valid required_length char pid
-		return false; // then not valid
-	}
-	return true;
-}
-exports.IsValidShortPaymentID = IsValidShortPaymentID;
+module.exports = WazniyaBridgeClass_Base

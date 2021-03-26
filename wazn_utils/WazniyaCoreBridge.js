@@ -1,3 +1,4 @@
+// Copyright (c) 2020-2021 Wazniya
 // Copyright (c) 2014-2019, MyMonero.com
 //
 // All rights reserved.
@@ -26,16 +27,16 @@
 // STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF
 // THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
-const MyMoneroCoreBridgeClass = require('./MyMoneroCoreBridgeClass')
-const MyMoneroBridge_utils = require('./MyMoneroBridge_utils')
+const WazniyaCoreBridgeClass = require('./WazniyaCoreBridgeClass')
+const WazniyaBridge_utils = require('./WazniyaBridge_utils')
 //
 module.exports = function(options)
 {
 	options = options || {}
 
-	MyMoneroBridge_utils.update_options_for_fallback_to_asmjs(options)
+	WazniyaBridge_utils.update_options_for_fallback_to_asmjs(options)
 
-	const platform_info = MyMoneroBridge_utils.detect_platform();
+	const platform_info = WazniyaBridge_utils.detect_platform();
 	const ENVIRONMENT_IS_WEB = platform_info.ENVIRONMENT_IS_WEB;
 	const ENVIRONMENT_IS_WORKER = platform_info.ENVIRONMENT_IS_WORKER;
 	const ENVIRONMENT_IS_NODE = platform_info.ENVIRONMENT_IS_NODE;
@@ -48,7 +49,7 @@ module.exports = function(options)
 		// }
 		var this_scriptDirectory = scriptDirectory
 		const lastChar = this_scriptDirectory.charAt(this_scriptDirectory.length - 1)
-		if (lastChar == "/" || lastChar == "\\") { 
+		if (lastChar == "/" || lastChar == "\\") {
 			// ^-- this is not a '\\' on Windows because emscripten actually appends a '/'
 			this_scriptDirectory = this_scriptDirectory.substring(0, this_scriptDirectory.length - 1) // remove trailing "/"
 		}
@@ -56,22 +57,22 @@ module.exports = function(options)
 		if (ENVIRONMENT_IS_NODE) {
 			const path = require('path')
 			const lastPathComponent = path.basename(this_scriptDirectory)
-			if (lastPathComponent == "monero_utils") { // typical node or electron-main process
+			if (lastPathComponent == "wazn_utils") { // typical node or electron-main process
 				fullPath = path.format({
 					dir: this_scriptDirectory,
 					base: filename
 				})
 			} else {
-				console.warn(`MyMoneroCoreBridge/locateFile() on node.js didn't find "monero_utils" (or possibly MyMoneroCoreBridge.js) itself in the expected location in the following path. The function may need to be expanded but it might in normal situations be likely to be another bug. ${pathTo_cryptonoteUtilsDir}`)
+				console.warn(`WazniyaCoreBridge/locateFile() on node.js didn't find "wazn_utils" (or possibly WazniyaCoreBridge.js) itself in the expected location in the following path. The function may need to be expanded but it might in normal situations be likely to be another bug. ${pathTo_cryptonoteUtilsDir}`)
 			}
 		} else if (ENVIRONMENT_IS_WEB) {
 			var pathTo_cryptonoteUtilsDir;
-			if (typeof __dirname !== undefined && __dirname !== "/") { // looks like node running in browser.. (but not going to assume it's electron-renderer since that should be taken care of by monero_utils.js itself)
+			if (typeof __dirname !== undefined && __dirname !== "/") { // looks like node running in browser.. (but not going to assume it's electron-renderer since that should be taken care of by wazn_utils.js itself)
 				// but just in case it is... here's an attempt to support it
 				// have to check != "/" b/c webpack (I think) replaces __dirname
 				pathTo_cryptonoteUtilsDir = "file://" + __dirname + "/" // prepending "file://" because it's going to try to stream it
 			} else { // actual web browser
-				pathTo_cryptonoteUtilsDir = this_scriptDirectory + `/mymonero_core_js/monero_utils/` // this works for the MyMonero browser build, and is quite general, at least
+				pathTo_cryptonoteUtilsDir = this_scriptDirectory + `/wazniya_core_js/wazn_utils/` // this works for the Wazniya browser build, and is quite general, at least
 			}
 			fullPath = pathTo_cryptonoteUtilsDir + filename
 		}
@@ -89,12 +90,12 @@ module.exports = function(options)
 			Module_template["locateFile"] = locateFile
 			//
 			// NOTE: This requires src/module-post.js to be included as post-js in CMakeLists.txt under a wasm build
-			require(`./MyMoneroCoreCpp_WASM`)(Module_template).ready.then(function(thisModule) 
+			require(`./WazniyaCoreCpp_WASM`)(Module_template).ready.then(function(thisModule)
 			{
-				const instance = new MyMoneroCoreBridgeClass(thisModule);
+				const instance = new WazniyaCoreBridgeClass(thisModule);
 				resolve(instance);
 			}).catch(function(e) {
-				console.error("Error loading WASM_MyMoneroCoreCpp:", e);
+				console.error("Error loading WASM_WazniyaCoreCpp:", e);
 				reject(e);
 			});
 		} else { // this is synchronous so we can resolve immediately
@@ -127,7 +128,7 @@ module.exports = function(options)
 				};
 			} else if (ENVIRONMENT_IS_WEB||ENVIRONMENT_IS_WORKER) {
 				read_fn = function(url)
-				{ // it's an option to move this over to fetch, but, fetch requires a polyfill for these older browsers anyway - making fetch an automatic dep just for asmjs fallback - and the github/fetch polyfill does not appear to actually support mode (for 'same-origin' policy) anyway - probably not worth it yet 
+				{ // it's an option to move this over to fetch, but, fetch requires a polyfill for these older browsers anyway - making fetch an automatic dep just for asmjs fallback - and the github/fetch polyfill does not appear to actually support mode (for 'same-origin' policy) anyway - probably not worth it yet
 					var xhr = new XMLHttpRequest()
 					xhr.open("GET", url, false)
 					xhr.send(null)
@@ -137,7 +138,7 @@ module.exports = function(options)
 			} else {
 				throw "Unsupported environment - please implement file reading for asmjs fallback case"
 			}
-			const filepath = locateFile("MyMoneroCoreCpp_ASMJS.asm.js", scriptDirectory)
+			const filepath = locateFile("WazniyaCoreCpp_ASMJS.asm.js", scriptDirectory)
 			const content = read_fn(filepath)
 			// TODO: verify content - for now, relying on same-origin and tls/ssl
 			var Module = {}
@@ -151,8 +152,8 @@ module.exports = function(options)
 			{ // "delaying even 1ms is enough to allow compilation memory to be reclaimed"
 				Module_template['asm'] = Module['asm']
 				Module = null
-				resolve(new MyMoneroCoreBridgeClass(require("./MyMoneroCoreCpp_ASMJS")(Module_template)))
-			}, 1) 
+				resolve(new WazniyaCoreBridgeClass(require("./WazniyaCoreCpp_ASMJS")(Module_template)))
+			}, 1)
 		}
 	});
 };

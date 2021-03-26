@@ -1,3 +1,4 @@
+// Copyright (c) 2020-2021 Wazniya
 // Copyright (c) 2014-2019, MyMonero.com
 //
 // All rights reserved.
@@ -34,10 +35,10 @@
 const JSBigInt = require("../cryptonote_utils/biginteger").BigInteger;
 const nettype_utils = require("../cryptonote_utils/nettype");
 //
-const MyMoneroBridgeClass_Base = require('./MyMoneroBridgeClass_Base')
-const MyMoneroBridge_utils = require('./MyMoneroBridge_utils')
+const WazniyaBridgeClass_Base = require('./WazniyaBridgeClass_Base')
+const WazniyaBridge_utils = require('./WazniyaBridge_utils')
 //
-class MyMoneroCoreBridgeEssentialsClass extends MyMoneroBridgeClass_Base
+class WazniyaCoreBridgeEssentialsClass extends WazniyaBridgeClass_Base
 {
 	constructor(this_Module)
 	{
@@ -57,7 +58,7 @@ class MyMoneroCoreBridgeEssentialsClass extends MyMoneroBridgeClass_Base
 		if (typeof ret.err_msg !== 'undefined' && ret.err_msg) {
 			throw ret.err_msg;
 		}
-		return MyMoneroBridge_utils.ret_val_boolstring_to_bool(ret.retVal);
+		return WazniyaBridge_utils.ret_val_boolstring_to_bool(ret.retVal);
 	}
 
 	is_integrated_address(addr, nettype) {
@@ -72,7 +73,7 @@ class MyMoneroCoreBridgeEssentialsClass extends MyMoneroBridgeClass_Base
 		if (typeof ret.err_msg !== 'undefined' && ret.err_msg) {
 			throw ret.err_msg;
 		}
-		return MyMoneroBridge_utils.ret_val_boolstring_to_bool(ret.retVal);
+		return WazniyaBridge_utils.ret_val_boolstring_to_bool(ret.retVal);
 	}
 
 	new_payment_id() {
@@ -126,7 +127,7 @@ class MyMoneroCoreBridgeEssentialsClass extends MyMoneroBridgeClass_Base
 			spend: ret.pub_spendKey_string,
 			view: ret.pub_viewKey_string,
 			intPaymentId: ret.paymentID_string, // may be undefined
-			isSubaddress: MyMoneroBridge_utils.ret_val_boolstring_to_bool(ret.isSubaddress)
+			isSubaddress: WazniyaBridge_utils.ret_val_boolstring_to_bool(ret.isSubaddress)
 		}
 	}
 
@@ -169,7 +170,7 @@ class MyMoneroCoreBridgeEssentialsClass extends MyMoneroBridgeClass_Base
 		if (typeof ret.err_msg !== 'undefined' && ret.err_msg) {
 			throw ret.err_msg
 		}
-		return MyMoneroBridge_utils.ret_val_boolstring_to_bool(ret.retVal);
+		return WazniyaBridge_utils.ret_val_boolstring_to_bool(ret.retVal);
 	}
 
 	mnemonic_from_seed(
@@ -179,7 +180,7 @@ class MyMoneroCoreBridgeEssentialsClass extends MyMoneroBridgeClass_Base
 		const args =
 		{
 			seed_string: seed_string,
-			wordset_name: MyMoneroBridge_utils.api_safe_wordset_name(wordset_name)
+			wordset_name: WazniyaBridge_utils.api_safe_wordset_name(wordset_name)
 		};
 		const args_str = JSON.stringify(args);
 		const ret_string = this.Module.mnemonic_from_seed(args_str);
@@ -238,8 +239,8 @@ class MyMoneroCoreBridgeEssentialsClass extends MyMoneroBridgeClass_Base
 			throw ret.err_msg
 		}
 		return { // calling these out so as to provide a stable ret val interface
-			isValid: MyMoneroBridge_utils.ret_val_boolstring_to_bool(ret.isValid),
-			isInViewOnlyMode: MyMoneroBridge_utils.ret_val_boolstring_to_bool(ret.isInViewOnlyMode),
+			isValid: WazniyaBridge_utils.ret_val_boolstring_to_bool(ret.isValid),
+			isInViewOnlyMode: WazniyaBridge_utils.ret_val_boolstring_to_bool(ret.isInViewOnlyMode),
 			pub_viewKey_string: ret.pub_viewKey_string,
 			pub_spendKey_string: ret.pub_spendKey_string
 		};
@@ -331,4 +332,4 @@ class MyMoneroCoreBridgeEssentialsClass extends MyMoneroBridgeClass_Base
 	}
 }
 //
-module.exports = MyMoneroCoreBridgeEssentialsClass
+module.exports = WazniyaCoreBridgeEssentialsClass

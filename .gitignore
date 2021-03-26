@@ -12,6 +12,6 @@ contrib/boost-sdk/bootstrap.log
 contrib/boost-sdk/bin.v2
 
 
-tests/web/mymonero-core.js
-tests/web/mymonero_core_js
-tests/web/mymonero-core.js.map
+tests/web/wazniya-core.js
+tests/web/wazniya_core_js
+tests/web/wazniya-core.js.map

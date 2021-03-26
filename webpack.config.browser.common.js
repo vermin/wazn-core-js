@@ -1,3 +1,4 @@
+// Copyright (c) 2020-2021 Wazniya
 // Copyright (c) 2014-2019, MyMonero.com
 //
 // All rights reserved.
@@ -37,8 +38,8 @@ module.exports =
 	entry: "./index.js",
 	output: {
 		path: path.resolve(__dirname, "build"),
-		filename: "mymonero-core.js",
-        library: "mymonero_core_js",
+		filename: "wazniya-core.js",
+        library: "wazniya_core_js",
         libraryTarget: "umd"
 	},
 	cache: false,
@@ -81,8 +82,8 @@ module.exports =
 						path.join(__dirname, 'node_modules')
 					],
 					exclude: [
-						'monero_utils/MyMoneroCoreCpp_ASMJS.asm.js',
-						'monero_utils/MyMoneroCoreCpp_ASMJS.wasm'
+						'wazn_utils/WazniyaCoreCpp_ASMJS.asm.js',
+						'wazn_utils/WazniyaCoreCpp_ASMJS.wasm'
 					]
 				},
 				use: [

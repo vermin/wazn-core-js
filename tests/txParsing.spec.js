@@ -1,3 +1,4 @@
+// Copyright (c) 2020-2021 Wazniya
 // Copyright (c) 2014-2019, MyMonero.com
 //
 // All rights reserved.
@@ -27,8 +28,8 @@
 // THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 "use strict";
-const mymonero = require("../");
-const monero_config = require('../monero_utils/monero_config') 
+const wazniya = require("../");
+const wazn_config = require('../wazn_utils/wazn_config')
 const assert = require('assert')
 
 describe("sendingFunds tests", function()
@@ -36,24 +37,22 @@ describe("sendingFunds tests", function()
 	it("can tell locked reason -- in 5 blocks", function()
 	{
 		const blockchain_height = 1231231
-		const tx = 
+		const tx =
 		{
 			unlock_time: blockchain_height + 5,
 		}
-		const reason = mymonero.monero_txParsing_utils.TransactionLockedReason(tx, blockchain_height)
+		const reason = wazniya.wazn_txParsing_utils.TransactionLockedReason(tx, blockchain_height)
 		assert.equal(0, reason.indexOf("Will be unlocked in 5 blocks, ~5 minutes, Today at"))
 	});
 	it("can tell locked reason -- timestamp", function()
 	{
-		const blockchain_height = mymonero.monero_config.maxBlockNumber
-		const tx = 
+		const blockchain_height = wazniya.wazn_config.maxBlockNumber
+		const tx =
 		{
 			unlock_time: blockchain_height * 10000,
 		}
-		const reason = mymonero.monero_txParsing_utils.TransactionLockedReason(tx, blockchain_height)
+		const reason = wazniya.wazn_txParsing_utils.TransactionLockedReason(tx, blockchain_height)
 		assert.equal(0, reason.indexOf("Will be unlocked in"))
 		assert.notEqual(-1, reason.indexOf("years"))
 	});
 });
-
-

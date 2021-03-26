@@ -277,7 +277,7 @@ function tests(Module)
   }
 }
 console.time("Load module")
-require('../monero_utils/MyMoneroCoreBridge')({asmjs: false}).then(function(instance) // this can be switched to manually test asmjs vs wasm - can be exposed to option
+require('../wazn_utils/WazniyaCoreBridge')({asmjs: false}).then(function(instance) // this can be switched to manually test asmjs vs wasm - can be exposed to option
 {	
 	console.timeEnd("Load module")
 	console.log("Loaded instance")

@@ -1,19 +1,19 @@
 {
-  "name": "mymonero-core-js",
-  "version": "1.1.0",
-  "description": "The JS library containing the Monero crypto plus lightweight wallet functions behind the official MyMonero apps",
+  "name": "wazniya-core-js",
+  "version": "0.9.9",
+  "description": "The JS library containing the Wazn crypto plus lightweight wallet functions behind the official Wazniya apps",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mymonero/mymonero-core-js.git"
+    "url": "git+https://github.com/wazniya/wazniya-core-js.git"
   },
   "scripts": {
     "format": "find . -name '*.js*' | xargs prettier --write --config ./.prettierrc --config-precedence file-override",
     "test": "mocha"
   },
   "keywords": [
-    "monero",
-    "mymonero",
+    "wazn",
+    "wazniya",
     "javascript",
     "js",
     "lightweight",
@@ -24,12 +24,12 @@
     "utility",
     "tool"
   ],
-  "author": "MyMonero",
-  "license": "See LICENSE.TXT. Copyright (c) 2014-2019, MyMonero.com. All rights reserved.",
+  "author": "Wazniya",
+  "license": "See LICENSE.TXT. Copyright (c) 2020-2021 Wazniya. All rights reserved.",
   "bugs": {
-    "url": "https://github.com/mymonero/mymonero-core-js/issues"
+    "url": "https://github.com/wazniya/wazniya-core-js/issues"
   },
-  "homepage": "https://github.com/mymonero/mymonero-core-js#readme",
+  "homepage": "https://github.com/wazniya/wazniya-core-js#readme",
   "dependencies": {},
   "devDependencies": {
     "babel-core": "6.26.3",
@@ -47,9 +47,9 @@
     "verbose": true,
     "coveragePathIgnorePatterns": [
       "node_modules",
-      "monero_utils/MyMoneroCoreCpp_WASM.js",
-      "monero_utils/MyMoneroCoreCpp_ASMJS.js",
-      "monero_utils/MyMoneroCoreCpp_ASMJS.asm.js",
+      "wazn_utils/WazniyaCoreCpp_WASM.js",
+      "wazn_utils/WazniyaCoreCpp_ASMJS.js",
+      "wazn_utils/WazniyaCoreCpp_ASMJS.asm.js",
       "tests/emjs/*"
     ]
   }

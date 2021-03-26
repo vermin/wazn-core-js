@@ -1,3 +1,4 @@
+// Copyright (c) 2020-2021 Wazniya
 // Copyright (c) 2014-2019, MyMonero.com
 //
 // All rights reserved.
@@ -140,7 +141,7 @@ function _new_HTTPRequestHandlerFunctionCallingFn(fn) {
 				json = JSON.parse(body);
 			} catch (e) {
 				console.error(
-					"❌  HostedMoneroAPIClient Error: Unable to parse json with exception:",
+					"❌  HostedWaznAPIClient Error: Unable to parse json with exception:",
 					e,
 					"\nbody:",
 					body,

@@ -1,3 +1,4 @@
+// Copyright (c) 2020-2021 Wazniya
 // Copyright (c) 2014-2019, MyMonero.com
 //
 // All rights reserved.
@@ -30,17 +31,17 @@
 //
 // NOTE: The main downside to using an index.js file like this is that it will pull in all the code - rather than the consumer requiring code module-by-module
 // It's of course possible to construct your own stripped-down index.[custom name].js file for, e.g., special webpack bundling usages.
-const mymonero_core_js = {};
-mymonero_core_js.monero_utils_promise = require("./monero_utils/MyMoneroCoreBridge")(); // NOTE: This is actually a promise. Call .then(function(monero_utils) { }) to actually use
-mymonero_core_js.monero_config = require("./monero_utils/monero_config");
-mymonero_core_js.monero_txParsing_utils = require("./monero_utils/monero_txParsing_utils");
-mymonero_core_js.monero_sendingFunds_utils = require("./monero_utils/monero_sendingFunds_utils");
-mymonero_core_js.monero_keyImage_cache_utils = require("./monero_utils/monero_keyImage_cache_utils");
-mymonero_core_js.monero_paymentID_utils = require("./monero_utils/monero_paymentID_utils");
-mymonero_core_js.monero_amount_format_utils = require("./monero_utils/monero_amount_format_utils");
-mymonero_core_js.api_response_parser_utils = require("./hostAPI/response_parser_utils");
+const wazniya_core_js = {};
+wazniya_core_js.wazn_utils_promise = require("./wazn_utils/WazniyaCoreBridge")(); // NOTE: This is actually a promise. Call .then(function(wazn_utils) { }) to actually use
+wazniya_core_js.wazn_config = require("./wazn_utils/wazn_config");
+wazniya_core_js.wazn_txParsing_utils = require("./wazn_utils/wazn_txParsing_utils");
+wazniya_core_js.wazn_sendingFunds_utils = require("./wazn_utils/wazn_sendingFunds_utils");
+wazniya_core_js.wazn_keyImage_cache_utils = require("./wazn_utils/wazn_keyImage_cache_utils");
+wazniya_core_js.wazn_paymentID_utils = require("./wazn_utils/wazn_paymentID_utils");
+wazniya_core_js.wazn_amount_format_utils = require("./wazn_utils/wazn_amount_format_utils");
+wazniya_core_js.api_response_parser_utils = require("./hostAPI/response_parser_utils");
 //
-mymonero_core_js.nettype_utils = require("./cryptonote_utils/nettype");
-mymonero_core_js.JSBigInt = require("./cryptonote_utils/biginteger").BigInteger; // so that it is available to a hypothetical consumer's language-bridging web context for constructing string arguments to the above modules
+wazniya_core_js.nettype_utils = require("./cryptonote_utils/nettype");
+wazniya_core_js.JSBigInt = require("./cryptonote_utils/biginteger").BigInteger; // so that it is available to a hypothetical consumer's language-bridging web context for constructing string arguments to the above modules
 //
-module.exports = mymonero_core_js;
+module.exports = wazniya_core_js;

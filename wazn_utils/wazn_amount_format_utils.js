@@ -1,3 +1,4 @@
+// Copyright (c) 2020-2021 Wazniya
 // Copyright (c) 2014-2019, MyMonero.com
 //
 // All rights reserved.
@@ -28,49 +29,8 @@
 //
 "use strict";
 //
-const JSBigInt = require("../cryptonote_utils/biginteger").BigInteger;
+const wazn_config = require("./wazn_config")
+const money_format_utils = require("../cryptonote_utils/money_format_utils")
+const instance = money_format_utils(wazn_config)
 //
-function _mixinToRingsize(mixin) {
-	return mixin + 1;
-}
-//
-function thisFork_minMixin() {
-	return 10;
-}
-function thisFork_minRingSize() {
-	return _mixinToRingsize(thisFork_minMixin());
-}
-exports.thisFork_minMixin = thisFork_minMixin;
-exports.thisFork_minRingSize = thisFork_minRingSize;
-//
-function fixedMixin() {
-	return thisFork_minMixin(); /* using the monero app default to remove MM user identifiers */
-}
-function fixedRingsize() {
-	return _mixinToRingsize(fixedMixin());
-}
-exports.fixedMixin = fixedMixin;
-exports.fixedRingsize = fixedRingsize;
-//
-//
-function default_priority() {
-	return 1;
-} // aka .low
-exports.default_priority = default_priority;
-//
-const SendFunds_ProcessStep_Code = {
-	fetchingLatestBalance: 1,
-	calculatingFee: 2,
-	fetchingDecoyOutputs: 3, // may get skipped if 0 mixin
-	constructingTransaction: 4, // may go back to .calculatingFee
-	submittingTransaction: 5,
-};
-exports.SendFunds_ProcessStep_Code = SendFunds_ProcessStep_Code;
-const SendFunds_ProcessStep_MessageSuffix = {
-	1: "Fetching latest balance.",
-	2: "Calculating fee.",
-	3: "Fetching decoy outputs.",
-	4: "Constructing transaction.", // may go back to .calculatingFee
-	5: "Submitting transaction.",
-};
-exports.SendFunds_ProcessStep_MessageSuffix = SendFunds_ProcessStep_MessageSuffix;
+module.exports = instance;

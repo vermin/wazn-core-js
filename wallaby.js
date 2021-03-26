@@ -1,3 +1,4 @@
+// Copyright (c) 2020-2021 Wazniya
 // Copyright (c) 2014-2019, MyMonero.com
 //
 // All rights reserved.
@@ -30,19 +31,19 @@ module.exports = function(wallaby) {
 	process.env.NODE_ENV = "development";
 
 	return {
-		name: "mymonero-core-js",
+		name: "wazniya-core-js",
 		files: [
 			"cryptonote_utils/**/*.js",
 			"hostAPI/**/*.js",
-			"monero_utils/**/*.js",
+			"wazn_utils/**/*.js",
 			"index.js",
 			"tests/borromean/test_parameters.js",
 		],
 
 		filesWithNoCoverageCalculated: [
-			"monero_utils/MyMoneroCoreCpp_WASM.js",
-			"monero_utils/MyMoneroCoreCpp_ASMJS.js",
-			"monero_utils/MyMoneroCoreCpp_ASMJS.asm.js"
+			"wazn_utils/WazniyaCoreCpp_WASM.js",
+			"wazn_utils/WazniyaCoreCpp_ASMJS.js",
+			"wazn_utils/WazniyaCoreCpp_ASMJS.asm.js"
 		],
 
 		tests: ["./tests/**/*spec.js"],
